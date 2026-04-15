@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 export default function MiksAI() {
   const [inputText, setInputText] = useState("");
   const [kalender, setKalender] = useState([
-    { tid: "08:30", event: "System Check-up", kat: "System" },
-    { tid: "17:30", event: "Data Log Opdatering", kat: "Micki" }
+    { tid: "08:30", event: "System Check-up", kat: "Core" },
+    { tid: "17:30", event: "Log Opdatering", kat: "Micki" }
   ]);
   const [chatLog, setChatLog] = useState([
-    { role: 'ai', text: 'MiksAI Master Interface Online. Jeg overvåger alle systemer.' }
+    { role: 'ai', text: 'MiksAI v5.0 ready. Systemet kører i minimalistisk tilstand.' }
   ]);
 
   const handleSend = () => {
@@ -15,108 +15,113 @@ export default function MiksAI() {
     const userMsg = inputText.toLowerCase();
     const newLog = [...chatLog, { role: 'user', text: inputText }];
     
-    // Kalender-logik (fanger klokkeslæt og tekst)
     if (userMsg.includes("aftale") || userMsg.includes("kl")) {
       const tidMatch = inputText.match(/(\d{2}:\d{2})|(\d{1,2})[ ]?kl/);
       const tid = tidMatch ? (tidMatch[1] || tidMatch[2] + ":00") : "??:??";
       const eventNavn = inputText.replace(/aftale|kl|(\d{2}:\d{2})/gi, "").trim();
 
-      const nyAftale = { tid: tid, event: eventNavn || "Ny begivenhed", kat: "Bruger" };
+      const nyAftale = { tid: tid, event: eventNavn || "Ny event", kat: "User" };
       setKalender(prev => [...prev, nyAftale].sort((a, b) => a.tid.localeCompare(b.tid)));
-      setChatLog([...newLog, { role: 'ai', text: `Kalender opdateret: ${nyAftale.event} kl. ${nyAftale.tid}.` }]);
+      setChatLog([...newLog, { role: 'ai', text: `Kalender synkroniseret: ${nyAftale.event}.` }]);
     } else {
-      setChatLog([...newLog, { role: 'ai', text: 'Data modtaget. Informationerne er indlejret i systemet.' }]);
+      setChatLog([...newLog, { role: 'ai', text: 'Data integreret i hukommelsen.' }]);
     }
     setInputText("");
   };
 
   const nyheder = [
-    { kilde: "DR", titel: "Solen bryder igennem i dag", tid: "Nu" },
-    { kilde: "TV2", titel: "Ny AI teknologi revolutionerer hverdagen", tid: "20m" },
-    { kilde: "BIF", titel: "Truppen træner for lukkede døre", tid: "1t" }
+    { kilde: "DR", titel: "Solen bryder igennem", tid: "Nu" },
+    { kilde: "BIF", titel: "Træning intensiveres", tid: "1t" }
   ];
 
   const madplan = [
-    { d: "Man", r: "Pasta Bolognese", c: "#ff3131" },
-    { d: "Tir", r: "Kylling m. Ris", c: "#ffde59" },
-    { d: "Ons", r: "Hakkebøffer", c: "#b266ff" }
+    { d: "Man", r: "Pasta", c: "#ff4d4d" },
+    { d: "Tir", r: "Kylling", c: "#ffcc00" },
+    { d: "Ons", r: "Bøf", c: "#c266ff" }
   ];
 
   return (
-    <div style={{ backgroundColor: '#050214', color: 'white', minHeight: '100vh', padding: '15px', fontFamily: 'sans-serif', position: 'relative', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#02010a', color: 'white', minHeight: '100vh', padding: '25px', fontFamily: '-apple-system, system-ui, sans-serif', position: 'relative', overflowX: 'hidden' }}>
       
-      {/* BAGGRUND & NEON */}
-      <div style={{ position: 'fixed', inset: 0, opacity: 0.3, backgroundImage: 'url(/backfest.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }} />
-      <div style={{ position: 'fixed', inset: 0, background: 'radial-gradient(circle at top left, rgba(255,49,49,0.2) 0%, transparent 50%), radial-gradient(circle at bottom right, rgba(0,210,255,0.2) 0%, transparent 50%)', zIndex: 1, pointerEvents: 'none' }} />
+      {/* 2026 BACKGROUND ENGINE */}
+      <div style={{ position: 'fixed', inset: 0, opacity: 0.4, backgroundImage: 'url(/backfest.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }} />
+      <div style={{ position: 'fixed', inset: 0, background: 'radial-gradient(circle at 20% 20%, rgba(255,49,49,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,210,255,0.15) 0%, transparent 50%)', zIndex: 1, pointerEvents: 'none' }} />
 
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: '500px', margin: '0 auto', paddingBottom: '140px' }}>
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: '480px', margin: '0 auto', paddingBottom: '160px' }}>
         
-        {/* HEADER */}
-        <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '2px solid #ff3131', paddingBottom: '10px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: '900', letterSpacing: '1px', fontStyle: 'italic' }}>MiksAI</h1>
+        {/* ULTRA-CLEAN HEADER */}
+        <header style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '40px', paddingTop: '20px' }}>
+          <div>
+            <h1 style={{ fontSize: '32px', fontWeight: '200', letterSpacing: '-1px', margin: 0 }}>Miks<span style={{ fontWeight: '800' }}>AI</span></h1>
+            <div style={{ fontSize: '9px', color: '#ff3131', fontWeight: 'bold', letterSpacing: '3px', textTransform: 'uppercase', marginTop: '4px' }}>Neural Interface</div>
+          </div>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '18px', fontWeight: '900' }}>14°C</div>
-            <div style={{ fontSize: '8px', color: '#00d2ff', fontWeight: 'bold' }}>HJORTESPRING</div>
+            <div style={{ fontSize: '32px', fontWeight: '100', lineHeight: '1' }}>14°</div>
+            <div style={{ fontSize: '8px', opacity: 0.4, fontWeight: 'bold', letterSpacing: '1px' }}>H J O R T E S P R I N G</div>
           </div>
         </header>
 
-        {/* TOP GRID: NYHEDER & MADPLAN */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '15px' }}>
-          <section style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(20px)', padding: '15px', borderRadius: '25px', border: '1px solid rgba(255,49,49,0.2)' }}>
-            <h3 style={{ fontSize: '9px', fontWeight: '900', color: '#ff3131', marginBottom: '10px' }}>NEWS</h3>
+        {/* INFO CLUSTER */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '15px', marginBottom: '20px' }}>
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <h3 style={{ fontSize: '10px', fontWeight: '800', color: '#ff3131', marginBottom: '15px', letterSpacing: '1px' }}>NYHEDER</h3>
             {nyheder.map((n, i) => (
-              <div key={i} style={{ marginBottom: '8px', borderLeft: '2px solid #ff3131', paddingLeft: '8px' }}>
-                <div style={{ fontSize: '10px', fontWeight: 'bold', lineHeight: '1.1' }}>{n.titel}</div>
+              <div key={i} style={{ marginBottom: '12px' }}>
+                <div style={{ fontSize: '11px', fontWeight: '600', lineHeight: '1.3' }}>{n.titel}</div>
+                <div style={{ fontSize: '8px', opacity: 0.4, marginTop: '2px' }}>{n.kilde} • {n.tid}</div>
               </div>
             ))}
           </section>
-          <section style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(20px)', padding: '15px', borderRadius: '25px', border: '1px solid rgba(255,255,255,0.1)' }}>
-            <h3 style={{ fontSize: '9px', fontWeight: '900', opacity: 0.5, marginBottom: '10px' }}>MENU</h3>
+          
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <h3 style={{ fontSize: '10px', fontWeight: '800', opacity: 0.3, marginBottom: '15px', letterSpacing: '1px' }}>MENU</h3>
             {madplan.map((m, i) => (
-              <div key={i} style={{ fontSize: '10px', display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-                <span style={{ opacity: 0.5 }}>{m.d}</span>
-                <span style={{ fontWeight: 'bold', color: m.c }}>{m.r.split(' ')[0]}</span>
+              <div key={i} style={{ fontSize: '11px', display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ opacity: 0.4 }}>{m.d}</span>
+                <span style={{ fontWeight: '700', color: m.c }}>{m.r}</span>
               </div>
             ))}
           </section>
         </div>
 
-        {/* KALENDER PROTOCOL */}
-        <section style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(20px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(0,210,255,0.3)', marginBottom: '15px' }}>
-          <h2 style={{ fontSize: '10px', fontWeight: '900', color: '#00d2ff', letterSpacing: '2px', marginBottom: '15px' }}>CALENDAR PROTOCOL</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        {/* CALENDAR - THE GLAS CARD */}
+        <section style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(40px)', padding: '25px', borderRadius: '40px', border: '1px solid rgba(0,210,255,0.15)', marginBottom: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
+          <h2 style={{ fontSize: '11px', fontWeight: '800', color: '#00d2ff', letterSpacing: '2px', marginBottom: '20px', textAlign: 'center' }}>CALENDAR PROTOCOL</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {kalender.map((k, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', background: 'rgba(255,255,255,0.03)', padding: '10px 15px', borderRadius: '15px' }}>
-                <span style={{ fontSize: '11px', fontWeight: 'bold', color: '#00d2ff' }}>{k.tid}</span>
-                <span style={{ fontSize: '11px', fontWeight: 'bold' }}>{k.event}</span>
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <span style={{ fontSize: '12px', fontWeight: '300', color: '#00d2ff' }}>{k.tid}</span>
+                <span style={{ fontSize: '13px', fontWeight: '600', letterSpacing: '-0.2px' }}>{k.event}</span>
               </div>
             ))}
           </div>
         </section>
 
-        {/* CHAT LOG */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' }}>
+        {/* CHAT LOG - SUBTLE */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 10px' }}>
           {chatLog.slice(-2).map((msg, i) => (
             <div key={i} style={{ alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
-              <div style={{ padding: '12px 18px', borderRadius: '20px', fontSize: '11px', fontWeight: 'bold', background: msg.role === 'user' ? 'rgba(255,49,49,0.2)' : 'rgba(0,210,255,0.1)', border: '1px solid rgba(255,255,255,0.05)' }}>
+              <div style={{ padding: '14px 22px', borderRadius: '25px', fontSize: '12px', fontWeight: '500', background: msg.role === 'user' ? 'rgba(255,49,49,0.1)' : 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
                 {msg.text}
               </div>
             </div>
           ))}
         </div>
 
-        {/* INPUT UNIT */}
-        <div style={{ position: 'fixed', bottom: '25px', left: '15px', right: '15px', maxWidth: '500px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <input 
-              type="text" 
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="KOMMANDO ELLER AFTALE..." 
-              style={{ flex: 1, padding: '20px 25px', background: 'rgba(5, 2, 20, 0.9)', border: '2px solid #ff3131', borderRadius: '50px', color: 'white', fontSize: '12px', fontWeight: 'bold', outline: 'none', boxShadow: '0 0 20px rgba(255,49,49,0.3)' }}
-            />
-            <button onClick={handleSend} style={{ width: '55px', height: '55px', background: '#ff3131', borderRadius: '50%', border: 'none', color: 'white', fontWeight: 'black', fontSize: '22px' }}>↑</button>
+        {/* THE FLOATING INPUT UNIT */}
+        <div style={{ position: 'fixed', bottom: '40px', left: '25px', right: '25px', maxWidth: '480px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <div style={{ flex: 1, position: 'relative' }}>
+              <input 
+                type="text" 
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                placeholder="Aftale eller kommando..." 
+                style={{ width: '100%', padding: '22px 30px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', color: 'white', fontSize: '14px', fontWeight: '400', outline: 'none', backdropFilter: 'blur(20px)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+              />
+            </div>
+            <button onClick={handleSend} style={{ width: '60px', height: '60px', background: 'white', borderRadius: '50%', border: 'none', color: 'black', fontWeight: '800', fontSize: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↑</button>
           </div>
         </div>
 
