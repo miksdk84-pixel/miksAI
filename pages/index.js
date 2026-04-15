@@ -1,123 +1,115 @@
-import React, { useState } from 'react';
-import { MapPin, Wind, Droplets, Calendar, Newspaper, Trophy, Send, Cloud, Zap } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { MapPin, Wind, Droplets, Calendar, Newspaper, Trophy, Send, Cloud, Zap, Clock } from "lucide-react";
 
 export default function Home() {
   const [inputText, setInputText] = useState("");
+  const [chatLog, setChatLog] = useState([
+    { role: 'ai', text: 'System online. Velkommen tilbage, MICKI. Outlook-forbindelse via IFTTT er aktiv.' }
+  ]);
+
+  // Her vil dine rigtige kalenderdata lande fra IFTTT
+  const [appointments, setAppointments] = useState([
+    { time: '18:00', title: 'Middag: Pasta m. kødsovs', type: 'Madplan' },
+    { time: 'I morgen', title: 'Brøndby Træning', type: 'Sport' }
+  ]);
 
   const handleSend = () => {
-    if (inputText.trim()) {
-      alert("MICKI AI modtog din besked: " + inputText);
-      setInputText("");
-    }
+    if (!inputText.trim()) return;
+    const userMsg = { role: 'user', text: inputText };
+    setChatLog(prev => [...prev, userMsg]);
+
+    // AI Svar-logik
+    setTimeout(() => {
+      let response = `Modtaget, MICKI. Jeg tjekker systemerne for "${inputText}".`;
+      if(inputText.toLowerCase().includes("vejr")) response = "Vejret i Hjortespring er pt. 14 grader og skyfrit.";
+      if(inputText.toLowerCase().includes("brøndby")) response = "Brøndby IF er altid klar! Næste kamp er i kalenderen.";
+      
+      const aiMsg = { role: 'ai', text: response };
+      setChatLog(prev => [...prev, aiMsg]);
+    }, 600);
+    setInputText("");
   };
 
   return (
     <div className="min-h-screen bg-[#0a0520] text-white p-6 font-sans relative overflow-hidden">
       <head>
         <script src="https://cdn.tailwindcss.com"></script>
-        <title>MIKS_AI Dashboard</title>
+        <title>MIKS_AI | MICKI Control</title>
       </head>
 
-      {/* Avanceret Neon Baggrund */}
+      {/* Baggrunds-effekter */}
       <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-5%] left-[-5%] w-[600px] h-[600px] bg-red-600 rounded-full blur-[150px] opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-[-5%] right-[-5%] w-[600px] h-[600px] bg-cyan-400 rounded-full blur-[150px] opacity-20 animate-pulse"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-red-600 rounded-full blur-[120px] opacity-10"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-cyan-500 rounded-full blur-[120px] opacity-10"></div>
       </div>
 
-      <div className="relative z-10 max-w-2xl mx-auto pb-32">
-        {/* Header Sektion */}
-        <header className="flex items-center gap-5 mb-8 border-b border-red-500/30 pb-8">
-          <div className="w-20 h-20 bg-black rounded-2xl flex items-center justify-center border-2 border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] overflow-hidden">
-             <img src="/M_logo.png" alt="M" className="w-full h-full object-cover" onError={(e) => e.target.style.display='none'} />
+      <div className="relative z-10 max-w-2xl mx-auto pb-44">
+        {/* Top Bar */}
+        <header className="flex justify-between items-center mb-8 border-b border-white/10 pb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-red-600 rounded-lg flex items-center justify-center font-black italic shadow-[0_0_15px_rgba(239,68,68,0.5)]">M</div>
+            <div>
+              <h1 className="text-3xl font-black tracking-tighter italic">MIKS_AI</h1>
+              <p className="text-[8px] text-cyan-400 font-bold uppercase tracking-[0.3em]">Operator: MICKI</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-6xl font-black tracking-tighter italic" style={{textShadow: '0 0 15px rgba(239,68,68,0.7)'}}>
-              MIKS<span className="text-red-500">_</span>AI
-            </h1>
-            <p className="text-cyan-400 text-xs tracking-[0.4em] font-black uppercase opacity-90">Morgen Strategi Center</p>
+          <div className="text-right">
+            <p className="text-[10px] font-bold text-gray-500 uppercase">Status</p>
+            <p className="text-[10px] text-green-400 font-bold animate-pulse">CONNECTED_IFTTT</p>
           </div>
         </header>
 
-        {/* Vejr Detaljeret */}
-        <section className="bg-black/60 backdrop-blur-2xl p-8 rounded-[2.5rem] border border-cyan-500/30 shadow-2xl mb-6">
-          <div className="flex justify-between items-start mb-8">
-            <div>
-              <p className="flex items-center gap-2 text-cyan-400 text-xs font-black uppercase tracking-widest mb-2">
-                <MapPin size={14} /> Hjortespring, DK
-              </p>
-              <h2 className="text-4xl font-black italic tracking-tighter uppercase">14° NÆSTEN SKYFRIT</h2>
+        {/* Kalender & Nyheder Row */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          {/* Outlook Kalender */}
+          <section className="bg-black/60 backdrop-blur-xl p-5 rounded-[2rem] border border-purple-500/30">
+            <h3 className="text-purple-400 text-[10px] font-black uppercase mb-4 flex items-center gap-2"><Calendar size={14}/> Outlook Stream</h3>
+            <div className="space-y-3">
+              {appointments.map((app, i) => (
+                <div key={i} className="bg-white/5 p-3 rounded-xl border border-white/5 flex justify-between items-center">
+                  <div className="flex items-center gap-2 text-[10px]">
+                    <Clock size={12} className="text-purple-400"/>
+                    <span className="text-gray-400">{app.time}</span>
+                  </div>
+                  <span className="text-[10px] font-bold italic text-red-400 truncate ml-2">{app.title}</span>
+                </div>
+              ))}
             </div>
-            <Cloud size={48} className="text-cyan-400 animate-bounce" />
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center transition-all hover:bg-white/10">
-              <Wind size={20} className="text-red-500 mx-auto mb-2" />
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Vind</p>
-              <p className="text-sm font-black text-white">5 km/h</p>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center transition-all hover:bg-white/10">
-              <Droplets size={20} className="text-red-500 mx-auto mb-2" />
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Fugt</p>
-              <p className="text-sm font-black text-white">42%</p>
-            </div>
-            <div className="bg-white/5 p-4 rounded-2xl border border-white/5 text-center transition-all hover:bg-white/10">
-              <Zap size={20} className="text-red-500 mx-auto mb-2" />
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">UV</p>
-              <p className="text-sm font-black text-white">Lav</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Madplan Uge 16 */}
-        <section className="bg-black/60 backdrop-blur-2xl p-6 rounded-[2.5rem] border border-purple-600/30 mb-6 shadow-lg">
-          <div className="flex items-center gap-3 mb-5 border-b border-purple-500/20 pb-4">
-            <Calendar size={20} className="text-purple-400" />
-            <h3 className="text-purple-400 text-sm font-black uppercase tracking-widest">Madplan _ Uge 16</h3>
-          </div>
-          <div className="grid grid-cols-1 gap-3">
-            <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/5">
-              <span className="text-xs font-bold text-gray-300 tracking-wide">Mandag</span>
-              <span className="text-xs font-black text-red-400 uppercase tracking-tighter italic">Pasta m. kødsovs</span>
-            </div>
-            <div className="flex justify-between items-center p-3 bg-white/5 rounded-xl border-l-4 border-yellow-400">
-              <span className="text-xs font-bold text-gray-300 tracking-wide">Tirsdag</span>
-              <span className="text-xs font-black text-red-400 uppercase tracking-tighter italic">Kylling m. ris</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Sport & Nyheder Grid */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <section className="bg-black/60 backdrop-blur-2xl p-5 rounded-3xl border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]">
-            <div className="flex items-center gap-2 mb-3 text-yellow-400 uppercase text-[10px] font-black tracking-widest">
-              <Trophy size={14} /> Sport
-            </div>
-            <p className="text-[10px] font-bold text-blue-400 uppercase tracking-tighter">Brøndby IF</p>
-            <p className="text-xs font-black italic">Næste: Derby</p>
           </section>
-          <section className="bg-black/60 backdrop-blur-2xl p-5 rounded-3xl border border-blue-500/30">
-            <div className="flex items-center gap-2 mb-3 text-blue-400 uppercase text-[10px] font-black tracking-widest">
-              <Newspaper size={14} /> Nyheder
+
+          {/* Rigtige Nyheder 15. April */}
+          <section className="bg-black/60 backdrop-blur-xl p-5 rounded-[2rem] border border-blue-500/30">
+            <h3 className="text-blue-400 text-[10px] font-black uppercase mb-4 flex items-center gap-2"><Newspaper size={14}/> Global Feed</h3>
+            <div className="space-y-3">
+              <p className="text-[9px] font-bold leading-snug border-l-2 border-blue-500 pl-2">Valget i Ungarn: Orbán presset efter historisk nederlag.</p>
+              <p className="text-[9px] font-bold leading-snug border-l-2 border-blue-500 pl-2">Dansk streaming sætter rekord i første kvartal 2026.</p>
             </div>
-            <p className="text-[10px] font-bold text-gray-400 leading-tight">Systemet er nu optimeret til MICKI...</p>
           </section>
         </div>
 
-        {/* AI Chat Input (Nu med funktion!) */}
-        <div className="fixed bottom-6 left-6 right-6 max-w-2xl mx-auto z-50">
+        {/* Chat Log */}
+        <div className="space-y-4 mb-8 h-40 overflow-y-auto pr-2 custom-scrollbar">
+          {chatLog.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`p-4 rounded-2xl text-[11px] font-bold max-w-[85%] ${msg.role === 'user' ? 'bg-purple-600/30 border border-purple-400/30' : 'bg-cyan-900/40 border border-cyan-400/40'}`}>
+                {msg.text}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Chat Input */}
+        <div className="fixed bottom-6 left-6 right-6 max-w-2xl mx-auto">
           <div className="relative group">
             <input 
               type="text" 
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="Hvad kan jeg hjælpe med, MICKI?" 
-              className="w-full bg-black/90 border-2 border-purple-600/40 rounded-full py-5 px-8 text-sm font-bold focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_40px_rgba(0,229,255,0.4)] transition-all shadow-[0_0_30px_rgba(168,85,247,0.2)] text-white placeholder-gray-500"
+              placeholder="Skriv kommando til MICKI AI..." 
+              className="w-full bg-black/95 border-2 border-purple-500/30 rounded-full py-5 px-8 text-sm font-bold focus:outline-none focus:border-cyan-400 shadow-[0_0_30px_rgba(168,85,247,0.2)] text-white"
             />
-            <button 
-              onClick={handleSend}
-              className="absolute right-6 top-1/2 -translate-y-1/2 text-cyan-400 hover:scale-110 transition-transform active:scale-95"
-            >
+            <button onClick={handleSend} className="absolute right-6 top-1/2 -translate-y-1/2 text-cyan-400">
               <Send size={24} />
             </button>
           </div>
