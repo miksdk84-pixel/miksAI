@@ -2,127 +2,113 @@ import React, { useState } from 'react';
 
 export default function MiksAI() {
   const [inputText, setInputText] = useState("");
-  const [kalender, setKalender] = useState([
-    { tid: "08:30", event: "System Check-up", kat: "Core" },
-    { tid: "17:30", event: "Log Opdatering", kat: "Micki" }
-  ]);
-  const [chatLog, setChatLog] = useState([
-    { role: 'ai', text: 'MiksAI v5.0 ready. Systemet kører i minimalistisk tilstand.' }
+  const [madplan, setMadplan] = useState([
+    { d: "Man", r: "Pasta Bolognese", c: "#ff4d4d" },
+    { d: "Tir", r: "Kylling m. Ris", c: "#ffcc00" },
+    { d: "Ons", r: "Hakkebøffer", c: "#c266ff" }
   ]);
 
-  const handleSend = () => {
-    if (!inputText.trim()) return;
-    const userMsg = inputText.toLowerCase();
-    const newLog = [...chatLog, { role: 'user', text: inputText }];
-    
-    if (userMsg.includes("aftale") || userMsg.includes("kl")) {
-      const tidMatch = inputText.match(/(\d{2}:\d{2})|(\d{1,2})[ ]?kl/);
-      const tid = tidMatch ? (tidMatch[1] || tidMatch[2] + ":00") : "??:??";
-      const eventNavn = inputText.replace(/aftale|kl|(\d{2}:\d{2})/gi, "").trim();
-
-      const nyAftale = { tid: tid, event: eventNavn || "Ny event", kat: "User" };
-      setKalender(prev => [...prev, nyAftale].sort((a, b) => a.tid.localeCompare(b.tid)));
-      setChatLog([...newLog, { role: 'ai', text: `Kalender synkroniseret: ${nyAftale.event}.` }]);
-    } else {
-      setChatLog([...newLog, { role: 'ai', text: 'Data integreret i hukommelsen.' }]);
-    }
-    setInputText("");
+  const genererMadplan = () => {
+    const retter = ["Tacos", "Laks m. asparges", "Hjemmelavet Pizza", "Wok m. nudler", "Burger", "Lasagne", "Salat bowl"];
+    const nyeRetter = madplan.map(m => ({
+      ...m,
+      r: retter[Math.floor(Math.random() * retter.length)]
+    }));
+    setMadplan(nyeRetter);
   };
 
-  const nyheder = [
-    { kilde: "DR", titel: "Solen bryder igennem", tid: "Nu" },
-    { kilde: "BIF", titel: "Træning intensiveres", tid: "1t" }
-  ];
-
-  const madplan = [
-    { d: "Man", r: "Pasta", c: "#ff4d4d" },
-    { d: "Tir", r: "Kylling", c: "#ffcc00" },
-    { d: "Ons", r: "Bøf", c: "#c266ff" }
+  const superliga = [
+    { p: 1, t: "AGF", pt: 56 },
+    { p: 2, t: "FCM", pt: 51 },
+    { p: 3, t: "FCN", pt: 41 },
+    { p: 6, t: "BIF", pt: 35 }
   ];
 
   return (
-    <div style={{ backgroundColor: '#02010a', color: 'white', minHeight: '100vh', padding: '25px', fontFamily: '-apple-system, system-ui, sans-serif', position: 'relative', overflowX: 'hidden' }}>
+    <div style={{ backgroundColor: '#02010a', color: 'white', minHeight: '100vh', padding: '20px', fontFamily: '-apple-system, sans-serif' }}>
       
-      {/* 2026 BACKGROUND ENGINE */}
-      <div style={{ position: 'fixed', inset: 0, opacity: 0.4, backgroundImage: 'url(/backfest.png)', backgroundSize: 'cover', backgroundPosition: 'center', zIndex: 0 }} />
-      <div style={{ position: 'fixed', inset: 0, background: 'radial-gradient(circle at 20% 20%, rgba(255,49,49,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,210,255,0.15) 0%, transparent 50%)', zIndex: 1, pointerEvents: 'none' }} />
-
-      <div style={{ position: 'relative', zIndex: 10, maxWidth: '480px', margin: '0 auto', paddingBottom: '160px' }}>
+      {/* BACKGROUND EFFECTS */}
+      <div style={{ position: 'fixed', inset: 0, opacity: 0.3, backgroundImage: 'url(/backfest.png)', backgroundSize: 'cover' }} />
+      
+      <div style={{ position: 'relative', zIndex: 10, maxWidth: '1000px', margin: '0 auto' }}>
         
-        {/* ULTRA-CLEAN HEADER */}
-        <header style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '40px', paddingTop: '20px' }}>
-          <div>
-            <h1 style={{ fontSize: '32px', fontWeight: '200', letterSpacing: '-1px', margin: 0 }}>Miks<span style={{ fontWeight: '800' }}>AI</span></h1>
-            <div style={{ fontSize: '9px', color: '#ff3131', fontWeight: 'bold', letterSpacing: '3px', textTransform: 'uppercase', marginTop: '4px' }}>Neural Interface</div>
-          </div>
+        {/* HEADER AREA */}
+        <header style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '30px' }}>
+          <h1 style={{ fontSize: '28px', fontWeight: '200' }}>Miks<span style={{ fontWeight: '800' }}>AI</span></h1>
           <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '32px', fontWeight: '100', lineHeight: '1' }}>14°</div>
-            <div style={{ fontSize: '8px', opacity: 0.4, fontWeight: 'bold', letterSpacing: '1px' }}>H J O R T E S P R I N G</div>
+            <div style={{ fontSize: '24px', fontWeight: '100' }}>14°</div>
+            <div style={{ fontSize: '8px', opacity: 0.5, letterSpacing: '2px' }}>BAGSVÆRD</div>
           </div>
         </header>
 
-        {/* INFO CLUSTER */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 0.8fr', gap: '15px', marginBottom: '20px' }}>
-          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ fontSize: '10px', fontWeight: '800', color: '#ff3131', marginBottom: '15px', letterSpacing: '1px' }}>NYHEDER</h3>
-            {nyheder.map((n, i) => (
-              <div key={i} style={{ marginBottom: '12px' }}>
-                <div style={{ fontSize: '11px', fontWeight: '600', lineHeight: '1.3' }}>{n.titel}</div>
-                <div style={{ fontSize: '8px', opacity: 0.4, marginTop: '2px' }}>{n.kilde} • {n.tid}</div>
-              </div>
-            ))}
-          </section>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
           
-          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <h3 style={{ fontSize: '10px', fontWeight: '800', opacity: 0.3, marginBottom: '15px', letterSpacing: '1px' }}>MENU</h3>
+          {/* LIVE NEWS FEED */}
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,49,49,0.2)' }}>
+            <h3 style={{ fontSize: '10px', color: '#ff3131', letterSpacing: '2px', marginBottom: '15px' }}>LIVE NYHEDER</h3>
+            <div style={{ fontSize: '12px', lineHeight: '1.6' }}>
+              <div style={{ marginBottom: '10px', borderLeft: '2px solid #ff3131', paddingLeft: '10px' }}>
+                <b>BREAKING:</b> Danskernes streamingforbrug sætter rekord i Q1 2026.
+              </div>
+              <div style={{ opacity: 0.7 }}>NASA forbereder historisk måneflyvning i aften.</div>
+            </div>
+          </section>
+
+          {/* SPORTS FEED & BIF */}
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(255,222,89,0.2)' }}>
+            <h3 style={{ fontSize: '10px', color: '#ffde59', letterSpacing: '2px', marginBottom: '15px' }}>SPORTS CENTER</h3>
+            <div style={{ background: 'rgba(0,0,0,0.3)', padding: '15px', borderRadius: '20px', marginBottom: '10px' }}>
+              <div style={{ fontSize: '9px', opacity: 0.5 }}>NÆSTE KAMP</div>
+              <div style={{ fontSize: '14px', fontWeight: 'bold' }}>Brøndby IF vs Sønderjyske</div>
+              <div style={{ fontSize: '11px', color: '#ffde59' }}>17. April • 19:00</div>
+            </div>
+            <div style={{ fontSize: '11px' }}>
+              {superliga.map(s => (
+                <div key={s.t} style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <span>{s.p}. {s.t}</span> <span>{s.pt} PTS</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* MADPLAN MED GENERATOR */}
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(178,102,255,0.2)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
+              <h3 style={{ fontSize: '10px', color: '#b266ff', letterSpacing: '2px' }}>MADPLAN</h3>
+              <button onClick={genererMadplan} style={{ background: '#b266ff', border: 'none', color: 'white', fontSize: '9px', padding: '5px 10px', borderRadius: '10px', cursor: 'pointer' }}>GENERÉR</button>
+            </div>
             {madplan.map((m, i) => (
-              <div key={i} style={{ fontSize: '11px', display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px', fontSize: '13px' }}>
                 <span style={{ opacity: 0.4 }}>{m.d}</span>
-                <span style={{ fontWeight: '700', color: m.c }}>{m.r}</span>
+                <span style={{ fontWeight: '600' }}>{m.r}</span>
               </div>
             ))}
           </section>
-        </div>
 
-        {/* CALENDAR - THE GLAS CARD */}
-        <section style={{ background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(40px)', padding: '25px', borderRadius: '40px', border: '1px solid rgba(0,210,255,0.15)', marginBottom: '20px', boxShadow: '0 20px 40px rgba(0,0,0,0.4)' }}>
-          <h2 style={{ fontSize: '11px', fontWeight: '800', color: '#00d2ff', letterSpacing: '2px', marginBottom: '20px', textAlign: 'center' }}>CALENDAR PROTOCOL</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {kalender.map((k, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                <span style={{ fontSize: '12px', fontWeight: '300', color: '#00d2ff' }}>{k.tid}</span>
-                <span style={{ fontSize: '13px', fontWeight: '600', letterSpacing: '-0.2px' }}>{k.event}</span>
+          {/* KALENDER */}
+          <section style={{ background: 'rgba(255,255,255,0.03)', backdropFilter: 'blur(30px)', padding: '20px', borderRadius: '30px', border: '1px solid rgba(0,210,255,0.2)' }}>
+            <h3 style={{ fontSize: '10px', color: '#00d2ff', letterSpacing: '2px', marginBottom: '15px' }}>KOMMENDE AFTALER</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              <div style={{ fontSize: '12px', display: 'flex', gap: '15px' }}>
+                <span style={{ color: '#00d2ff' }}>18:30</span>
+                <span>System Gennemgang</span>
               </div>
-            ))}
-          </div>
-        </section>
-
-        {/* CHAT LOG - SUBTLE */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '0 10px' }}>
-          {chatLog.slice(-2).map((msg, i) => (
-            <div key={i} style={{ alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
-              <div style={{ padding: '14px 22px', borderRadius: '25px', fontSize: '12px', fontWeight: '500', background: msg.role === 'user' ? 'rgba(255,49,49,0.1)' : 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                {msg.text}
+              <div style={{ fontSize: '12px', display: 'flex', gap: '15px', opacity: 0.5 }}>
+                <span>I morgen</span>
+                <span>TikTok Strategi Møde</span>
               </div>
             </div>
-          ))}
+          </section>
+
         </div>
 
-        {/* THE FLOATING INPUT UNIT */}
-        <div style={{ position: 'fixed', bottom: '40px', left: '25px', right: '25px', maxWidth: '480px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-            <div style={{ flex: 1, position: 'relative' }}>
-              <input 
-                type="text" 
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Aftale eller kommando..." 
-                style={{ width: '100%', padding: '22px 30px', background: 'rgba(255, 255, 255, 0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', color: 'white', fontSize: '14px', fontWeight: '400', outline: 'none', backdropFilter: 'blur(20px)', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
-              />
-            </div>
-            <button onClick={handleSend} style={{ width: '60px', height: '60px', background: 'white', borderRadius: '50%', border: 'none', color: 'black', fontWeight: '800', fontSize: '24px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↑</button>
-          </div>
+        {/* FLOATING COMMAND INPUT */}
+        <div style={{ position: 'fixed', bottom: '30px', left: '50%', transform: 'translateX(-50%)', width: '90%', maxWidth: '500px' }}>
+          <input 
+            type="text" 
+            placeholder="Skriv kommando..." 
+            style={{ width: '100%', padding: '20px 30px', background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '100px', color: 'white', outline: 'none', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+          />
         </div>
 
       </div>
