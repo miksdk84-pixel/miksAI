@@ -4,61 +4,48 @@ import { MapPin, Calendar, Newspaper, Send } from "lucide-react";
 
 export default function MiksAI() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-[#0a0520] text-white font-sans">
-      <div className="fixed inset-0 z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[70%] h-[70%] bg-[#FF1744] rounded-full blur-[120px] opacity-20"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[70%] h-[70%] bg-[#00E5FF] rounded-full blur-[120px] opacity-20"></div>
+    <div className="min-h-screen bg-[#0a0520] text-white p-6 font-sans relative overflow-hidden">
+      {/* Background Glow */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-20 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-[#FF1744] rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-[#00E5FF] rounded-full blur-[100px]"></div>
       </div>
-      
-      <div className="relative z-10 p-6 max-w-2xl mx-auto pb-32">
-        <header className="mb-8 pt-4 flex items-center gap-6 border-b border-[#00E5FF]/20 pb-6">
-          <img 
-            src="/M_logo.png" 
-            alt="Logo" 
-            className="w-20 h-20 rounded-2xl border-2 border-[#B721FF] shadow-[0_0_20px_rgba(183,33,255,0.5)] object-cover"
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-          />
+
+      <div className="relative z-10 max-w-md mx-auto">
+        <header className="flex items-center gap-4 mb-8 border-b border-white/10 pb-6">
+          <div className="w-16 h-16 bg-[#B721FF] rounded-2xl flex items-center justify-center shadow-lg border-2 border-white/20 overflow-hidden">
+             <img src="/M_logo.png" alt="M" className="w-full h-full object-cover" />
+          </div>
           <div>
-            <h1 className="text-5xl font-bold tracking-tighter italic shadow-sm">MIKS<span className="text-[#00E5FF]">_</span>AI</h1>
-            <p className="text-[#00E5FF] text-[10px] tracking-[0.3em] font-bold opacity-80 uppercase">DIN PERSONLIGE MORGEN-HUB</p>
+            <h1 className="text-4xl font-bold tracking-tighter italic">MIKS_AI</h1>
+            <p className="text-[#00E5FF] text-[10px] tracking-widest font-bold uppercase">Morgen Dashboard</p>
           </div>
         </header>
 
-        <section className="bg-black/40 backdrop-blur-xl p-6 rounded-3xl mb-6 border border-[#FF1744]/30 shadow-lg text-center">
-          <div className="flex justify-center items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#FF1744] mb-2">
-            <MapPin size={16} /> Lokation
+        <main className="space-y-4">
+          <div className="bg-black/40 backdrop-blur-md p-6 rounded-3xl border border-[#FF1744]/40 text-center">
+            <div className="flex justify-center items-center gap-2 text-[#FF1744] text-xs font-bold uppercase mb-2">
+              <MapPin size={14} /> Hjortespring
+            </div>
+            <div className="text-5xl font-bold tracking-tighter italic">LIVE_MODE</div>
           </div>
-          <div className="text-4xl font-bold italic uppercase">HJORTESPRING</div>
-          <p className="text-sm text-gray-400 mt-2 uppercase font-bold tracking-tighter">Vejr-data indlæses...</p>
-        </section>
 
-        <section className="bg-black/40 backdrop-blur-xl p-6 rounded-3xl mb-6 border border-[#B721FF]/30">
-          <h2 className="flex items-center gap-2 text-sm font-bold mb-4 text-[#B721FF] uppercase tracking-wider font-bold">
-            <Calendar size={18} /> DAGENS PROGRAM
-          </h2>
-          <button className="w-full py-4 bg-white/5 border border-white/10 rounded-xl text-sm font-bold hover:bg-[#B721FF]/20 transition-all uppercase">
-            Log ind med Outlook
-          </button>
-        </section>
-
-        <section className="bg-black/40 backdrop-blur-xl p-6 rounded-3xl mb-6 border border-[#00E5FF]/30">
-          <h2 className="flex items-center gap-2 text-sm font-bold mb-4 text-[#00E5FF] uppercase tracking-wider font-bold">
-            <Newspaper size={18} /> SENESTE NYHEDER
-          </h2>
-          <div className="text-xs text-gray-400 italic">Forbinder til nyheds-feed...</div>
-        </section>
-
-        <div className="fixed bottom-6 left-6 right-6 max-w-2xl mx-auto">
-          <div className="relative">
-            <input 
-              type="text" 
-              placeholder="SKRIV TIL MIKSAI..." 
-              className="w-full bg-black/80 backdrop-blur-2xl border border-[#B721FF]/50 rounded-full py-5 px-8 text-sm font-bold focus:outline-none focus:border-[#00E5FF] shadow-[0_0_30px_rgba(183,33,255,0.2)]"
-            />
-            <button className="absolute right-6 top-1/2 -translate-y-1/2 text-[#00E5FF]">
-              <Send size={20}/>
-            </button>
+          <div className="bg-black/40 backdrop-blur-md p-6 rounded-3xl border border-[#B721FF]/40">
+            <div className="flex items-center gap-2 text-[#B721FF] text-xs font-bold uppercase mb-4">
+              <Calendar size={14} /> Program
+            </div>
+            <div className="h-12 bg-white/5 rounded-xl border border-white/10 flex items-center justify-center text-xs font-bold opacity-50 uppercase">
+              Forbinder til Outlook...
+            </div>
           </div>
+        </main>
+
+        <div className="fixed bottom-6 left-6 right-6 max-w-md mx-auto">
+          <input 
+            type="text" 
+            placeholder="SKRIV TIL MIKSAI..." 
+            className="w-full bg-black/80 border border-[#00E5FF]/30 rounded-full py-4 px-6 text-sm font-bold focus:outline-none focus:border-[#00E5FF] shadow-2xl"
+          />
         </div>
       </div>
     </div>
