@@ -1,107 +1,127 @@
-"use client";
+import React, { useState } from 'react';
 
-import React, { useState, useEffect } from "react";
-import {
-  MapPin, Wind, Droplets, Eye, Gauge, Cloud, Navigation, Calendar, Newspaper, Trophy, Sparkles, Send
-} from "lucide-react";
+export default function Home() {
+  const [inputText, setInputText] = useState("");
+  const [chatLog, setChatLog] = useState([
+    { role: 'ai', text: 'Interface V3.0 online. Velkommen tilbage, MICKI.' }
+  ]);
 
-export default function MiksAI() {
-  const [chatInput, setChatInput] = useState("");
+  const handleSend = () => {
+    if (!inputText.trim()) return;
+    const newLog = [...chatLog, { role: 'user', text: inputText }];
+    setChatLog(newLog);
+    setTimeout(() => {
+      setChatLog([...newLog, { role: 'ai', text: `Besked modtaget. Systemet optimeres til dine præferencer.` }]);
+    }, 600);
+    setInputText("");
+  };
+
+  const madplan = [
+    { dag: "Man", ret: "Pasta m. kødsovs", farve: "#ff4d4d" },
+    { dag: "Tir", ret: "Kylling m. ris", farve: "#ffcc00" },
+    { dag: "Ons", ret: "Hakkebøffer", farve: "#c266ff" },
+    { dag: "Tor", ret: "Rester / Rugbrød", farve: "#999999" },
+    { dag: "Fre", ret: "Hjemmelavet Pizza", farve: "#33ff77" },
+    { dag: "Lør", ret: "Burger Night", farve: "#ff9933" },
+    { dag: "Søn", ret: "Lasagne", farve: "#3399ff" }
+  ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden font-sans bg-[#0a0520] text-white">
-      {/* Det originale Cyberpunk Baggrunds-glow */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-[#FF1744] rounded-full blur-[120px] opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-[#00E5FF] rounded-full blur-[120px] opacity-20 animate-pulse" style={{ animationDelay: "1s" }}></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-[#B721FF] rounded-full blur-[120px] opacity-15 animate-pulse" style={{ animationDelay: "2s" }}></div>
+    <div className="min-h-screen bg-[#050214] text-white p-5 font-sans relative overflow-hidden">
+      {/* Tailwind Import via CDN for at sikre det virker */}
+      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+      
+      {/* M_LOGO BAGGRUND */}
+      <div 
+        className="fixed inset-0 z-0 opacity-[0.08] pointer-events-none"
+        style={{
+          backgroundImage: 'url(/M_logo.png)',
+          backgroundSize: '100%',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      />
+
+      {/* Glow Effects */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-red-600 opacity-10 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-blue-600 opacity-10 rounded-full blur-[100px]"></div>
       </div>
 
-      <div className="relative z-10 p-6 max-w-2xl mx-auto pb-32">
-        {/* Header med Neon-effekt */}
-        <header className="mb-8 pt-4 border-b border-[#FF1744]/30 pb-8 shadow-[0_0_20px_rgba(255,23,68,0.3)]">
+      <div className="relative z-10 max-w-xl mx-auto pb-40">
+        {/* Header */}
+        <header className="flex justify-between items-center mb-8 pt-4">
           <div className="flex items-center gap-4">
-            <img src="/M_logo.png" alt="Logo" className="w-16 h-16 rounded-xl border-2 border-[#FF1744] shadow-[0_0_15px_rgba(255,23,68,0.5)]" />
+            <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-2xl">
+              <span className="text-2xl font-black italic">M</span>
+            </div>
             <div>
-              <h1 className="text-5xl font-bold tracking-tighter italic" style={{ textShadow: "0 0 20px rgba(255,23,68,0.8), 0 0 40px rgba(0,229,255,0.6)" }}>
-                MIKS<span className="text-[#FF1744]">_</span>AI
-              </h1>
-              <p className="text-[#00E5FF] text-[10px] tracking-[0.3em] font-bold opacity-80 uppercase">Real-time Atmosfærisk Datastream</p>
+              <h1 className="text-2xl font-black tracking-tight uppercase">Micki_Control</h1>
+              <p className="text-xs text-blue-400 font-bold tracking-widest opacity-60">SYSTEM ACTIVE</p>
             </div>
           </div>
         </header>
 
-        {/* Vejr Sektion (Det gamle look) */}
-        <section className="bg-black/40 backdrop-blur-xl p-8 rounded-3xl mb-6 border border-[#00E5FF]/40 shadow-[0_0_20px_rgba(0,229,255,0.2)]">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <div className="flex items-center gap-2 text-[#00E5FF] text-xs font-bold uppercase tracking-widest mb-2">
-                <MapPin size={14} /> Din Lokation
+        {/* Spotify - Glassmorphism */}
+        <section className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-lg p-4 rounded-[2.5rem] border border-white border-opacity-10 mb-6 shadow-2xl">
+          <iframe 
+            style={{borderRadius: "24px"}}
+            src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGvYBM3s" 
+            width="100%" height="152" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe>
+        </section>
+
+        {/* Udvidet Madplan */}
+        <section className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-lg p-6 rounded-[2.5rem] border border-white border-opacity-10 mb-6 shadow-2xl">
+          <h3 className="text-[10px] font-black uppercase mb-4 tracking-widest opacity-50">Weekly Protocol _ Uge 16</h3>
+          <div className="space-y-2">
+            {madplan.map((item, i) => (
+              <div key={i} className="flex justify-between items-center p-3 px-5 rounded-2xl bg-white bg-opacity-5 border border-white border-opacity-5">
+                <span className="text-[10px] font-bold text-gray-500">{item.dag}</span>
+                <span className="text-[11px] font-black uppercase tracking-tighter" style={{color: item.farve}}>{item.ret}</span>
               </div>
-              <h2 className="text-3xl font-bold italic">HJORTESPRING</h2>
-            </div>
-            <div className="text-right">
-              <div className="text-6xl font-bold text-[#00E5FF]" style={{ textShadow: "0 0 20px rgba(0,229,255,0.8)" }}>14°</div>
-              <div className="text-xs uppercase font-bold text-gray-400 mt-1">Næsten skyfrit</div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/5 p-3 rounded-2xl border border-white/10 flex items-center gap-3">
-              <Wind size={18} className="text-[#B721FF]" />
-              <span className="text-xs font-bold uppercase text-gray-300">5 km/h</span>
-            </div>
-            <div className="bg-white/5 p-3 rounded-2xl border border-white/10 flex items-center gap-3">
-              <Droplets size={18} className="text-[#B721FF]" />
-              <span className="text-xs font-bold uppercase text-gray-300">42% fugt</span>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* Kalender Sektion */}
-        <section className="bg-black/40 backdrop-blur-xl p-6 rounded-3xl mb-6 border border-[#B721FF]/40 shadow-[0_0_20px_rgba(183,33,255,0.2)]">
-          <h2 className="flex items-center gap-2 text-sm font-bold mb-4 text-[#B721FF] uppercase tracking-wider">
-            <Calendar size={18} /> Dagens Program
-          </h2>
-          <button className="w-full py-4 bg-gradient-to-r from-[#FF1744]/20 to-[#B721FF]/20 border-2 border-[#FF1744] rounded-2xl text-sm font-bold uppercase tracking-widest hover:shadow-[0_0_20px_rgba(255,23,68,0.5)] transition-all">
-            Log ind med Outlook
-          </button>
-        </section>
+        {/* News & Links */}
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          <a href="https://dr.dk" target="_blank" className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-lg p-4 rounded-2xl text-[10px] font-bold text-center border border-white border-opacity-10 hover:bg-opacity-10 transition-all">
+            DR LIVE
+          </a>
+          <a href="https://tv2.dk" target="_blank" className="bg-white bg-opacity-5 backdrop-filter backdrop-blur-lg p-4 rounded-2xl text-[10px] font-bold text-center border border-white border-opacity-10 hover:bg-opacity-10 transition-all">
+            TV2 NEWS
+          </a>
+        </div>
 
-        {/* Nyheder */}
-        <section className="bg-black/40 backdrop-blur-xl p-6 rounded-3xl mb-6 border border-[#00E5FF]/40">
-          <h2 className="flex items-center gap-2 text-sm font-bold mb-4 text-[#00E5FF] uppercase tracking-wider">
-            <Newspaper size={18} /> Morgennyheder
-          </h2>
-          <div className="space-y-3 opacity-60">
-            <div className="h-4 bg-white/10 rounded w-3/4"></div>
-            <div className="h-4 bg-white/10 rounded w-1/2"></div>
-          </div>
-        </section>
+        {/* Chat Log */}
+        <div className="space-y-3 mb-8 px-2">
+          {chatLog.map((msg, i) => (
+            <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div className={`p-4 rounded-[1.5rem] text-[11px] font-bold max-w-[80%] ${msg.role === 'user' ? 'bg-red-600 bg-opacity-20 text-red-200' : 'bg-white bg-opacity-5 text-blue-100'}`}>
+                {msg.text}
+              </div>
+            </div>
+          ))}
+        </div>
 
-        {/* AI Chat Input (Original stil) */}
-        <div className="fixed bottom-6 left-6 right-6 max-w-2xl mx-auto z-50">
+        {/* Input Field */}
+        <div className="fixed bottom-8 left-6 right-6 max-w-xl mx-auto">
           <div className="relative">
             <input 
               type="text" 
-              value={chatInput}
-              onChange={(e) => setChatInput(e.target.value)}
-              placeholder="SKRIV TIL MIKSAI..." 
-              className="w-full bg-black/80 backdrop-blur-3xl border-2 border-[#B721FF]/50 rounded-full py-5 px-8 text-sm font-bold focus:outline-none focus:border-[#00E5FF] shadow-[0_0_40px_rgba(183,33,255,0.3)]"
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+              placeholder="Systemkommando..." 
+              className="w-full bg-white bg-opacity-10 backdrop-filter backdrop-blur-xl border border-white border-opacity-10 rounded-full py-5 px-8 text-sm font-bold focus:outline-none focus:border-red-500 shadow-2xl text-white placeholder-white placeholder-opacity-20"
             />
-            <button className="absolute right-6 top-1/2 -translate-y-1/2 text-[#00E5FF]">
-              <Send size={24}/>
+            <button onClick={handleSend} className="absolute right-3 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-red-600 rounded-full flex items-center justify-center shadow-lg">
+              <span className="text-white text-lg">↑</span>
             </button>
           </div>
         </div>
       </div>
-
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
-        body { font-family: 'Rajdhani', sans-serif; background: #0a0520; }
-        .animate-pulse { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(1.1); } }
-      `}</style>
     </div>
   );
 }
